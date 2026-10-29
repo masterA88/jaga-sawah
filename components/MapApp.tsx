@@ -18,6 +18,7 @@ type Props = {
   chip: string | null;
   luas_m2: number;
   periode: string;
+  tahun_bangunan: number | null;
 };
 
 type FC = GeoJSON.FeatureCollection<GeoJSON.Geometry, Props>;
@@ -88,9 +89,12 @@ export default function MapApp() {
         </p>
 
         <div className="mt-4 rounded-lg bg-green-50 p-3">
-          <div className="text-xs uppercase tracking-wide text-green-800">Estimasi alih fungsi LSD 2018 ke 2023</div>
-          <div className="text-2xl font-semibold text-green-900">161 ± 13 ha</div>
-          <div className="text-xs text-neutral-600">dari 799 ha LSD; Sentinel-1 dan Sentinel-2, estimator Olofsson</div>
+          <div className="text-xs uppercase tracking-wide text-green-800">Bangunan baru di LSD, 2018 ke 2023</div>
+          <div className="text-2xl font-semibold text-green-900">± 36 ha</div>
+          <div className="text-xs text-neutral-600">
+            dari 799 ha LSD, menurut Google Open Buildings Temporal (kisaran 16 sampai 79 ha tergantung ambang). Belum
+            termasuk tanah urug dan bangunan 2024 sampai 2025.
+          </div>
         </div>
 
         <h2 className="mt-4 font-semibold">Kandidat per status</h2>
@@ -129,6 +133,12 @@ export default function MapApp() {
               <dd>{Math.round(picked.luas_m2).toLocaleString("id-ID")} m²</dd>
               <dt className="text-neutral-500">Periode</dt>
               <dd>{picked.periode}</dd>
+              {picked.tahun_bangunan != null && (
+                <>
+                  <dt className="text-neutral-500">Bangunan muncul</dt>
+                  <dd>sekitar {picked.tahun_bangunan} (Open Buildings Temporal)</dd>
+                </>
+              )}
               {picked.verdict && (
                 <>
                   <dt className="text-neutral-500">Putusan AI</dt>
@@ -156,6 +166,7 @@ export default function MapApp() {
         <p className="mt-4 text-xs text-neutral-500">
           Hasil ini indikasi dari citra satelit 10 m dan AI, bukan putusan hukum. Setiap kandidat wajib ditinjau
           petugas sebelum ada tindakan. Citra: Copernicus Sentinel (2018 sampai 2025). Peta LSD: BIG Satu Peta.
+          Bangunan: Google Open Buildings Temporal (CC BY 4.0).
         </p>
       </aside>
 

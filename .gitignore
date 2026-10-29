@@ -44,3 +44,6 @@ next-env.d.ts
 /public/data/
 !.env.example
 /public/maplibre/
+
+# local agent logs
+/.tmp/

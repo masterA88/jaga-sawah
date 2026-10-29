@@ -19,7 +19,7 @@ Pengguna:
 
 - Peta LSD dan kandidat alih fungsi dengan empat status: terverifikasi AI, perlu tinjau petugas, belum diverifikasi, ditolak AI.
 - Detail tiap kandidat: luas, periode, putusan AI dengan tingkat keyakinan, alasan dalam bahasa Indonesia, dan potongan citra Sentinel-2 2018, 2023, 2025.
-- Ringkasan luas alih fungsi LSD dengan selang kepercayaan (estimator Olofsson).
+- Ringkasan luas bangunan baru di LSD menurut Open Buildings Temporal, dan perkiraan tahun bangunan muncul per kandidat.
 
 ## Tech Stack
 
@@ -29,9 +29,9 @@ Pengguna:
 
 ## AI Implementation
 
-1. **Deteksi.** Random forest pada 48 fitur dua waktu: enam band Sentinel-2, NDVI median, sebaran, dan persentil 90, NDBI, MNDWI, BSI, ditambah VV, VH, sebaran VV, dan rasio dari Sentinel-1 RTC, untuk 2018 dan 2023 serta selisihnya. Label referensi dari footprint bangunan Overture Maps (Google Open Buildings, Microsoft, OSM).
+1. **Deteksi.** Random forest pada 48 fitur dua waktu: enam band Sentinel-2, NDVI median, sebaran, dan persentil 90, NDBI, MNDWI, BSI, ditambah VV, VH, sebaran VV, dan rasio dari Sentinel-1 RTC, untuk 2018 dan 2023 serta selisihnya. Label dari Google Open Buildings 2.5D Temporal (keberadaan bangunan per tahun) untuk semua piksel, diambil lewat Earth Engine dalam skrip batch.
 2. **Verifikasi.** Setiap kandidat dikirim ke Claude sebagai satu gambar tiga tahun ditambah nilai indeks. Claude menjawab dalam JSON dengan enum verdict tetap (`conversion`, `already_built`, `harvest_or_fallow`, `flooding`, `cloud_artifact`, `unclear`), keyakinan, dan alasan. Claude tidak pernah melihat label referensi.
-3. **Hasil uji di Kuta Utara** (validasi silang blok spasial 1 km): presisi alih fungsi di dalam LSD 0,88 dan recall 0,91. Setelah verifikasi Claude, presisi kandidat terverifikasi naik menjadi 0,92. Biaya verifikasi kurang dari US$0,01 per kandidat. Batasannya dicatat di bagian Known Limitations.
+3. **Hasil uji di Kuta Utara.** Validasi silang blok spasial 1 km, dinilai pada semua piksel LSD dengan prevalensi asli 4,7%. Untuk "bangunan baru 2018 ke 2023" menurut Open Buildings Temporal, hasilnya presisi 0,51, recall 0,76, dan average precision 0,58. Sebagian besar sisa "alarm palsu" kehilangan vegetasi sama seperti alih fungsi yang benar (NDVI 0,68 ke 0,19), dan 68% di antaranya sudah punya sebagian bangunan. Jadi sebagian besar kemungkinan alih fungsi yang belum menjadi bangunan penuh. Claude tidak menaikkan presisi pada model ini. Perannya memberi alasan per kandidat, menandai "sudah bangunan sejak 2018", dan memilah kandidat yang perlu ditinjau petugas. Biayanya kurang dari US$0,01 per kandidat.
 
 ## Architecture / Data Flow
 
@@ -63,7 +63,7 @@ Tidak diperlukan.
 ## Known Limitations
 
 - Resolusi 10 m: bangunan kecil dan piksel campuran di tepi permukiman sering diberi status "perlu tinjau".
-- Label referensi berasal dari footprint bangunan dari citra sekitar 2022 sampai 2023. Bangunan 2024 sampai 2025 belum tercakup, dan sampel referensi hanya memuat piksel yang jelas.
+- Label referensi hanya mengukur bangunan sampai 2023. Tanah urug, jalan, dan bangunan 2024 sampai 2025 tidak terhitung sebagai alih fungsi oleh referensi.
 - Peta LSD BIG (metadata 2021) memuat sebagian rumah yang sudah ada sebelumnya.
 - Hasil adalah indikasi, bukan putusan hukum. Setiap kandidat wajib ditinjau petugas.
 
@@ -71,7 +71,8 @@ Tidak diperlukan.
 
 - Contains modified Copernicus Sentinel data (2018 to 2025), lewat Microsoft Planetary Computer.
 - Peta Lahan Sawah yang Dilindungi: BIG Satu Peta, layer 59.
-- Footprint bangunan: Overture Maps Foundation (ODbL), berisi Google Open Buildings (CC BY 4.0), Microsoft Building Footprints (ODbL), dan OpenStreetMap (ODbL).
+- Bangunan per tahun: Google Open Buildings 2.5D Temporal (CC BY 4.0), lewat Google Earth Engine (nonkomersial).
+- Footprint bangunan untuk uji awal: Overture Maps Foundation (ODbL), berisi Google Open Buildings (CC BY 4.0), Microsoft Building Footprints (ODbL), dan OpenStreetMap (ODbL).
 - Basemap: OpenFreeMap, OpenMapTiles, data OpenStreetMap.
 - Batas kecamatan: OpenStreetMap lewat Nominatim.
 
