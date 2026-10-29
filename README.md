@@ -25,13 +25,13 @@ Pengguna:
 
 - Frontend: Next.js 16 (App Router), React 19, Tailwind CSS 4, MapLibre GL JS 6 lewat react-map-gl 8, basemap OpenFreeMap.
 - Pipeline data (offline, Python): Microsoft Planetary Computer STAC, `odc-stac`, `xarray`, `scikit-learn`, `geopandas`, DuckDB.
-- AI: random forest (scikit-learn) untuk deteksi; Claude (`claude-opus-5-5`) lewat Anthropic Message Batches API untuk verifikasi.
+- AI: embedding AlphaEarth Foundations dan random forest (scikit-learn) untuk deteksi; Claude (`claude-opus-5-5`) lewat Anthropic Message Batches API untuk verifikasi.
 
 ## AI Implementation
 
-1. **Deteksi.** Random forest pada 48 fitur dua waktu: enam band Sentinel-2, NDVI median, sebaran, dan persentil 90, NDBI, MNDWI, BSI, ditambah VV, VH, sebaran VV, dan rasio dari Sentinel-1 RTC, untuk 2018 dan 2023 serta selisihnya. Label dari Google Open Buildings 2.5D Temporal (keberadaan bangunan per tahun) untuk semua piksel, diambil lewat Earth Engine dalam skrip batch.
+1. **Deteksi.** Random forest pada 241 fitur dua waktu. Pertama, embedding tahunan AlphaEarth (Google Satellite Embedding V1, 64 dimensi) untuk 2018 dan 2023, selisihnya, dan kemiripan kosinusnya. Kedua, enam band Sentinel-2, NDVI median, sebaran, dan persentil 90, NDBI, MNDWI, BSI, ditambah VV, VH, sebaran VV, dan rasio dari Sentinel-1 RTC, untuk 2018 dan 2023 serta selisihnya. Label dari Google Open Buildings 2.5D Temporal (keberadaan bangunan per tahun) untuk semua piksel, diambil lewat Earth Engine dalam skrip batch.
 2. **Verifikasi.** Setiap kandidat dikirim ke Claude sebagai satu gambar tiga tahun ditambah nilai indeks. Claude menjawab dalam JSON dengan enum verdict tetap (`conversion`, `already_built`, `harvest_or_fallow`, `flooding`, `cloud_artifact`, `unclear`), keyakinan, dan alasan. Claude tidak pernah melihat label referensi.
-3. **Hasil uji di Kuta Utara.** Validasi silang blok spasial 1 km, dinilai pada semua piksel LSD dengan prevalensi asli 4,7%. Untuk "bangunan baru 2018 ke 2023" menurut Open Buildings Temporal, hasilnya presisi 0,51, recall 0,76, dan average precision 0,58. Sebagian besar sisa "alarm palsu" kehilangan vegetasi sama seperti alih fungsi yang benar (NDVI 0,68 ke 0,19), dan 68% di antaranya sudah punya sebagian bangunan. Jadi sebagian besar kemungkinan alih fungsi yang belum menjadi bangunan penuh. Claude tidak menaikkan presisi pada model ini. Perannya memberi alasan per kandidat, menandai "sudah bangunan sejak 2018", dan memilah kandidat yang perlu ditinjau petugas. Biayanya kurang dari US$0,01 per kandidat.
+3. **Hasil uji di Kuta Utara.** Validasi silang blok spasial 1 km, dinilai pada semua piksel LSD dengan prevalensi asli 4,7%. Untuk "bangunan baru 2018 ke 2023" menurut Open Buildings Temporal, hasilnya presisi 0,58, recall 0,73, dan average precision 0,65. Tanpa AlphaEarth, angkanya presisi 0,51 dan average precision 0,57. Sebagian besar sisa "alarm palsu" kehilangan vegetasi sama seperti alih fungsi yang benar (NDVI 0,68 ke 0,19), dan 68% di antaranya sudah punya sebagian bangunan. Jadi sebagian besar kemungkinan alih fungsi yang belum menjadi bangunan penuh. Claude tidak menaikkan presisi pada model ini. Perannya memberi alasan per kandidat, menandai "sudah bangunan sejak 2018", dan memilah kandidat yang perlu ditinjau petugas. Biayanya kurang dari US$0,01 per kandidat.
 
 ## Architecture / Data Flow
 
@@ -72,6 +72,7 @@ Tidak diperlukan.
 - Contains modified Copernicus Sentinel data (2018 to 2025), lewat Microsoft Planetary Computer.
 - Peta Lahan Sawah yang Dilindungi: BIG Satu Peta, layer 59.
 - Bangunan per tahun: Google Open Buildings 2.5D Temporal (CC BY 4.0), lewat Google Earth Engine (nonkomersial).
+- Embedding citra: Google Satellite Embedding V1 (AlphaEarth Foundations), lewat Google Earth Engine.
 - Footprint bangunan untuk uji awal: Overture Maps Foundation (ODbL), berisi Google Open Buildings (CC BY 4.0), Microsoft Building Footprints (ODbL), dan OpenStreetMap (ODbL).
 - Basemap: OpenFreeMap, OpenMapTiles, data OpenStreetMap.
 - Batas kecamatan: OpenStreetMap lewat Nominatim.
