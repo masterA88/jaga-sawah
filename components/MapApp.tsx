@@ -67,8 +67,23 @@ export default function MapApp() {
   useEffect(() => {
     fetch(`/data/${periode === "2018-2023" ? "kandidat_badung.geojson" : "kandidat_badung_2023_2025.geojson"}`)
       .then((r) => (r.ok ? r.json() : null))
-      .then(setKandidat);
+      .then((fc: FC | null) => {
+        setKandidat(fc);
+        // shareable link: ?patch=<id> opens that candidate's detail
+        const id = new URLSearchParams(window.location.search).get("patch");
+        const f = id ? fc?.features.find((x) => x.properties.patch_id === id) : undefined;
+        if (f) setPicked(f.properties);
+      });
   }, [periode]);
+
+  // shareable link: ?lat=&lon=&z= sets the starting view (falls back to the whole of Badung)
+  const [startView] = useState(() => {
+    const q = new URLSearchParams(window.location.search);
+    const lat = Number(q.get("lat")), lon = Number(q.get("lon")), z = Number(q.get("z"));
+    return Number.isFinite(lat) && Number.isFinite(lon) && lat && lon
+      ? { latitude: lat, longitude: lon, zoom: Number.isFinite(z) && z ? z : 15 }
+      : { longitude: 115.19, latitude: -8.53, zoom: 11 };
+  });
 
   const stats = useMemo(() => {
     const s = {} as Record<Status, { n: number; ha: number }>;
@@ -119,9 +134,53 @@ export default function MapApp() {
     setPicked(f ? (f.properties as unknown as Props) : null);
   };
 
+  const detail = picked ? (
+          <div className="mt-4 rounded-lg border border-neutral-200 p-3">
+            <div className="flex items-center justify-between">
+              <span className="font-mono text-xs">{picked.patch_id}</span>
+              <span
+                className="rounded px-2 py-0.5 text-xs text-white"
+                style={{ background: STATUS[picked.status].color }}
+              >
+                {STATUS[picked.status].label}
+              </span>
+            </div>
+            <dl className="mt-2 grid grid-cols-[auto_1fr] gap-x-3 gap-y-1">
+              <dt className="text-neutral-500">Luas</dt>
+              <dd>{Math.round(picked.luas_m2).toLocaleString("id-ID")} m²</dd>
+              <dt className="text-neutral-500">Periode</dt>
+              <dd>{picked.periode}</dd>
+              {picked.tahun_bangunan != null && (
+                <>
+                  <dt className="text-neutral-500">Bangunan muncul</dt>
+                  <dd>sekitar {picked.tahun_bangunan} (Open Buildings Temporal)</dd>
+                </>
+              )}
+              {picked.verdict && (
+                <>
+                  <dt className="text-neutral-500">Putusan AI</dt>
+                  <dd>
+                    {VERDICT[picked.verdict] ?? picked.verdict}
+                    {picked.confidence != null && ` (keyakinan ${Math.round(picked.confidence * 100)}%)`}
+                  </dd>
+                </>
+              )}
+            </dl>
+            {picked.alasan && <p className="mt-2 text-neutral-700">{picked.alasan}</p>}
+            {picked.chip && (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={`/data/chips_badung/${picked.chip}`}
+                alt={`Citra Sentinel-2 2018, 2023, 2025 untuk ${picked.patch_id}`}
+                className="mt-2 w-full rounded"
+              />
+            )}
+          </div>
+  ) : null;
+
   return (
     <div className="flex h-dvh flex-col md:flex-row">
-      <aside className="w-full shrink-0 overflow-y-auto border-b border-neutral-200 bg-white p-4 text-sm text-neutral-800 md:h-full md:w-96 md:border-r md:border-b-0">
+      <aside className="max-h-[45dvh] w-full shrink-0 overflow-y-auto border-b border-neutral-200 bg-white p-4 text-sm text-neutral-800 md:h-full md:max-h-none md:w-96 md:border-r md:border-b-0">
         <h1 className="text-xl font-bold text-green-800">JAGA SAWAH</h1>
         <p className="mt-1 text-neutral-600">
           Peringatan dini alih fungsi Lahan Sawah yang Dilindungi (LSD). Wilayah: Kabupaten Badung, periode 2018 ke
@@ -201,50 +260,10 @@ export default function MapApp() {
           ))}
         </ul>
 
-        {picked ? (
-          <div className="mt-4 rounded-lg border border-neutral-200 p-3">
-            <div className="flex items-center justify-between">
-              <span className="font-mono text-xs">{picked.patch_id}</span>
-              <span
-                className="rounded px-2 py-0.5 text-xs text-white"
-                style={{ background: STATUS[picked.status].color }}
-              >
-                {STATUS[picked.status].label}
-              </span>
-            </div>
-            <dl className="mt-2 grid grid-cols-[auto_1fr] gap-x-3 gap-y-1">
-              <dt className="text-neutral-500">Luas</dt>
-              <dd>{Math.round(picked.luas_m2).toLocaleString("id-ID")} m²</dd>
-              <dt className="text-neutral-500">Periode</dt>
-              <dd>{picked.periode}</dd>
-              {picked.tahun_bangunan != null && (
-                <>
-                  <dt className="text-neutral-500">Bangunan muncul</dt>
-                  <dd>sekitar {picked.tahun_bangunan} (Open Buildings Temporal)</dd>
-                </>
-              )}
-              {picked.verdict && (
-                <>
-                  <dt className="text-neutral-500">Putusan AI</dt>
-                  <dd>
-                    {VERDICT[picked.verdict] ?? picked.verdict}
-                    {picked.confidence != null && ` (keyakinan ${Math.round(picked.confidence * 100)}%)`}
-                  </dd>
-                </>
-              )}
-            </dl>
-            {picked.alasan && <p className="mt-2 text-neutral-700">{picked.alasan}</p>}
-            {picked.chip && (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={`/data/chips_badung/${picked.chip}`}
-                alt={`Citra Sentinel-2 2018, 2023, 2025 untuk ${picked.patch_id}`}
-                className="mt-2 w-full rounded"
-              />
-            )}
-          </div>
+        {detail ? (
+          <div className="hidden md:block">{detail}</div>
         ) : (
-          <p className="mt-4 text-neutral-500">Klik sebuah kandidat di peta untuk melihat detail dan citra.</p>
+          <p className="mt-4 hidden text-neutral-500 md:block">Klik sebuah kandidat di peta untuk melihat detail dan citra.</p>
         )}
 
         <a href="/validasi" className="mt-4 block rounded-lg border border-green-700 p-3 text-green-800 hover:bg-green-50">
@@ -258,9 +277,22 @@ export default function MapApp() {
         </p>
       </aside>
 
-      <main className="relative min-h-[60vh] flex-1">
+      <main className="relative min-h-[55dvh] flex-1">
+        {detail && (
+          // on phones the detail opens as a sheet over the map instead of in the sidebar above it
+          <div className="absolute inset-x-2 bottom-2 z-10 max-h-[65%] overflow-y-auto rounded-xl bg-white p-3 text-sm text-neutral-800 shadow-2xl md:hidden">
+            <button
+              onClick={() => setPicked(null)}
+              className="float-right rounded px-2 text-lg leading-none text-neutral-500"
+              aria-label="Tutup detail"
+            >
+              ×
+            </button>
+            {detail}
+          </div>
+        )}
         <Map
-          initialViewState={{ longitude: 115.19, latitude: -8.53, zoom: 11 }}
+          initialViewState={startView}
           mapStyle="https://tiles.openfreemap.org/styles/liberty"
           interactiveLayerIds={["kandidat-fill", "kandidat-pt"]}
           onClick={onClick}
