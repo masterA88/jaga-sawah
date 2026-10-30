@@ -6,6 +6,8 @@ Penulis: Hilmi (https://master-hilmi.vercel.app/)
 
 ![Cuplikan JAGA SAWAH: citra satelit Canggu 2018 ke 2025, peta kandidat, detail kandidat, cek lokasi dengan AI](docs/media/demo.gif)
 
+*Cuplikan 18 detik: citra satelit Canggu 2018 ke 2025, peta kandidat Badung, detail kandidat, dan cek lokasi dengan AI.*
+
 ## Description
 
 JAGA SAWAH adalah peringatan dini alih fungsi Lahan Sawah yang Dilindungi (LSD) di Bali. Aplikasi ini memadukan citra satelit Sentinel-1 dan Sentinel-2, embedding AlphaEarth, model deteksi perubahan, dan AI yang memeriksa serta menjelaskan setiap kandidat dalam bahasa Indonesia. Versi ini mencakup seluruh Kabupaten Badung (8.599 ha LSD), periode 2018 ke 2023, ditambah periode terbaru 2023 ke 2025.
