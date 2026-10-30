@@ -99,9 +99,9 @@ export default function AiPanel({ mode, titik, cek, cekLoading }: PanelProps) {
       {mode === "cek" ? (
         <>
           <div className="font-semibold">Cek lokasi dengan AI</div>
-          <p className="text-xs text-neutral-600">Klik titik mana pun di peta. Claude menjelaskan statusnya dan dasar aturannya.</p>
+          <p className="text-xs text-neutral-600">Klik titik mana pun di peta. AI menjelaskan statusnya dan dasar aturannya.</p>
           {loc && <div className="mt-1 font-mono text-xs">{loc}</div>}
-          {cekLoading && <p className="mt-2 text-sm text-neutral-500">Claude sedang menilai...</p>}
+          {cekLoading && <p className="mt-2 text-sm text-neutral-500">AI sedang menilai...</p>}
           {cek?.konteks && <Fakta k={cek.konteks} />}
           {cek?.jawaban && (
             <>
@@ -116,7 +116,7 @@ export default function AiPanel({ mode, titik, cek, cekLoading }: PanelProps) {
         <>
           <div className="font-semibold">Lapor dugaan alih fungsi</div>
           <p className="text-xs text-neutral-600">
-            Klik lokasi di peta, unggah foto lapangan, lalu kirim. Claude menyaring laporan dan memberi prioritas. Foto
+            Klik lokasi di peta, unggah foto lapangan, lalu kirim. AI menyaring laporan dan memberi prioritas. Foto
             tidak disimpan.
           </p>
           <div className="mt-1 font-mono text-xs">{loc ?? "Belum ada lokasi"}</div>
@@ -139,7 +139,7 @@ export default function AiPanel({ mode, titik, cek, cekLoading }: PanelProps) {
             disabled={!titik || !foto || loading}
             className="mt-2 w-full rounded bg-green-700 px-3 py-1.5 text-sm text-white disabled:opacity-50"
           >
-            {loading ? "Claude sedang menilai..." : "Kirim laporan"}
+            {loading ? "AI sedang menilai..." : "Kirim laporan"}
           </button>
           {lapor?.triase && (
             <div className="mt-3 text-sm">

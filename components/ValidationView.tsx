@@ -191,13 +191,13 @@ export default function ValidationView() {
       </section>
 
       <section className="mt-8">
-        <h2 className="text-lg font-semibold">Peran Claude</h2>
+        <h2 className="text-lg font-semibold">Peran AI verifikasi</h2>
         <p className="mt-1 text-sm text-neutral-700">
-          {d.claude.verified} kandidat diperiksa Claude (biaya US${d.claude.cost_usd.toFixed(2)}). Hasilnya:{" "}
+          {d.claude.verified} kandidat diperiksa AI verifikasi (biaya US${d.claude.cost_usd.toFixed(2)}). Hasilnya:{" "}
           {d.claude.verdicts.conversion} alih fungsi, {d.claude.verdicts.unclear} perlu tinjau,{" "}
           {d.claude.verdicts.already_built} sudah bangunan sejak 2018 (kesalahan peta LSD), dan sisanya ditolak.
-          Claude menjelaskan setiap kandidat dalam bahasa Indonesia dan memilah mana yang perlu dicek petugas. Claude
-          tidak menaikkan presisi, dan kami tidak mengklaimnya.
+          AI verifikasi menjelaskan setiap kandidat dalam bahasa Indonesia dan memilah mana yang perlu dicek petugas.
+          Langkah ini tidak menaikkan presisi deteksi, dan kami tidak mengklaimnya.
         </p>
       </section>
 

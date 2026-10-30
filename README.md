@@ -4,7 +4,7 @@ Penulis: Hilmi (https://master-hilmi.vercel.app/)
 
 ## Description
 
-JAGA SAWAH adalah peringatan dini alih fungsi Lahan Sawah yang Dilindungi (LSD) di Bali. Aplikasi ini memadukan citra satelit Sentinel-1 dan Sentinel-2, model random forest, dan verifikasi Claude. Hasilnya peta kandidat alih fungsi beserta alasannya, untuk ditinjau petugas Pemda dan subak. Versi ini mencakup seluruh Kabupaten Badung (8.599 ha LSD), periode 2018 ke 2023.
+JAGA SAWAH adalah peringatan dini alih fungsi Lahan Sawah yang Dilindungi (LSD) di Bali. Aplikasi ini memadukan citra satelit Sentinel-1 dan Sentinel-2, model random forest, dan verifikasi dengan model bahasa besar. Hasilnya peta kandidat alih fungsi beserta alasannya, untuk ditinjau petugas Pemda dan subak. Versi ini mencakup seluruh Kabupaten Badung (8.599 ha LSD), periode 2018 ke 2023.
 
 ## Problem & Target User
 
@@ -30,15 +30,15 @@ Pengguna:
 ## AI Implementation
 
 1. **Deteksi.** Random forest pada 241 fitur dua waktu. Pertama, embedding tahunan AlphaEarth (Google Satellite Embedding V1, 64 dimensi) untuk 2018 dan 2023, selisihnya, dan kemiripan kosinusnya. Kedua, enam band Sentinel-2, NDVI median, sebaran, dan persentil 90, NDBI, MNDWI, BSI, ditambah VV, VH, sebaran VV, dan rasio dari Sentinel-1 RTC, untuk 2018 dan 2023 serta selisihnya. Label dari Google Open Buildings 2.5D Temporal (keberadaan bangunan per tahun) untuk semua piksel, diambil lewat Earth Engine dalam skrip batch.
-2. **Verifikasi.** Setiap kandidat dikirim ke Claude sebagai satu gambar tiga tahun ditambah nilai indeks. Claude menjawab dalam JSON dengan enum verdict tetap (`conversion`, `already_built`, `harvest_or_fallow`, `flooding`, `cloud_artifact`, `unclear`), keyakinan, dan alasan. Claude tidak pernah melihat label referensi.
-3. **Hasil uji di seluruh Badung.** Validasi silang per tile 5 km, jadi setiap tile dinilai oleh model yang tidak pernah melihatnya, pada semua piksel LSD dengan prevalensi asli 1%. Hasilnya presisi 0,55, recall 0,61, dan average precision 0,57. Menurut Open Buildings Temporal, ada 87 ha bangunan baru di LSD Badung 2018 ke 2023. Claude menandai 26 petak sebagai sudah bangunan sejak 2018, yaitu kesalahan peta LSD. Biaya verifikasi 292 petak US$1,20.
-4. **Hasil uji awal di Kuta Utara.** Validasi silang blok spasial 1 km, dinilai pada semua piksel LSD dengan prevalensi asli 4,7%. Untuk "bangunan baru 2018 ke 2023" menurut Open Buildings Temporal, hasilnya presisi 0,58, recall 0,73, dan average precision 0,65. Tanpa AlphaEarth, angkanya presisi 0,51 dan average precision 0,57. Sebagian besar sisa "alarm palsu" kehilangan vegetasi sama seperti alih fungsi yang benar (NDVI 0,68 ke 0,19), dan 68% di antaranya sudah punya sebagian bangunan. Jadi sebagian besar kemungkinan alih fungsi yang belum menjadi bangunan penuh. Claude tidak menaikkan presisi pada model ini. Perannya memberi alasan per kandidat, menandai "sudah bangunan sejak 2018", dan memilah kandidat yang perlu ditinjau petugas. Biayanya kurang dari US$0,01 per kandidat.
+2. **Verifikasi.** Setiap kandidat dikirim ke model bahasa sebagai satu gambar tiga tahun ditambah nilai indeks. Model menjawab dalam JSON dengan enum verdict tetap (`conversion`, `already_built`, `harvest_or_fallow`, `flooding`, `cloud_artifact`, `unclear`), keyakinan, dan alasan. Model tidak pernah melihat label referensi.
+3. **Hasil uji di seluruh Badung.** Validasi silang per tile 5 km, jadi setiap tile dinilai oleh model yang tidak pernah melihatnya, pada semua piksel LSD dengan prevalensi asli 1%. Hasilnya presisi 0,55, recall 0,61, dan average precision 0,57. Menurut Open Buildings Temporal, ada 87 ha bangunan baru di LSD Badung 2018 ke 2023. AI verifikasi menandai 26 petak sebagai sudah bangunan sejak 2018, yaitu kesalahan peta LSD. Biaya verifikasi 292 petak US$1,20.
+4. **Hasil uji awal di Kuta Utara.** Validasi silang blok spasial 1 km, dinilai pada semua piksel LSD dengan prevalensi asli 4,7%. Untuk "bangunan baru 2018 ke 2023" menurut Open Buildings Temporal, hasilnya presisi 0,58, recall 0,73, dan average precision 0,65. Tanpa AlphaEarth, angkanya presisi 0,51 dan average precision 0,57. Sebagian besar sisa "alarm palsu" kehilangan vegetasi sama seperti alih fungsi yang benar (NDVI 0,68 ke 0,19), dan 68% di antaranya sudah punya sebagian bangunan. Jadi sebagian besar kemungkinan alih fungsi yang belum menjadi bangunan penuh. AI verifikasi tidak menaikkan presisi pada model ini. Perannya memberi alasan per kandidat, menandai "sudah bangunan sejak 2018", dan memilah kandidat yang perlu ditinjau petugas. Biayanya kurang dari US$0,01 per kandidat.
 
 ## Architecture / Data Flow
 
 ```
 Sentinel-1/2, AlphaEarth, Open Buildings (Earth Engine, batch per tile 5 km) -> fitur dua waktu
-   -> random forest -> petak kandidat di dalam LSD -> Claude (Batches API) -> verdict + alasan
+   -> random forest -> petak kandidat di dalam LSD -> AI verifikasi (batch) -> verdict + alasan
    -> GeoJSON statis -> Next.js + MapLibre (peta, detail, ringkasan)
 ```
 

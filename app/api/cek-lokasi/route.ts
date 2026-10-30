@@ -46,7 +46,6 @@ export async function POST(req: Request) {
     return Response.json({
       konteks,
       jawaban: { ...out, pasal: out.pasal.map((id) => ATURAN.find((a) => a.id === id)) },
-      model: MODEL,
     });
   } catch (e) {
     const g = pesanGalat(e);

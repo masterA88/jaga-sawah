@@ -65,7 +65,7 @@ export async function POST(req: Request) {
       return Response.json({ konteks, galat: "AI tidak memberi penilaian untuk foto ini." }, { status: 502 });
     }
     // the photo is not stored: only the assessment goes back to the reporter
-    return Response.json({ konteks, triase: res.parsed_output, model: MODEL });
+    return Response.json({ konteks, triase: res.parsed_output });
   } catch (e) {
     const g = pesanGalat(e);
     return Response.json({ konteks, galat: g.pesan }, { status: g.status });

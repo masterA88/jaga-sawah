@@ -168,7 +168,7 @@ export default function MapApp() {
         {periode === "2023-2025" && (
           <p className="mt-2 rounded bg-amber-50 p-2 text-xs text-amber-900">
             Periode terbaru, eksperimental: model yang sama diterapkan pada citra 2023 dan 2025. Belum ada data pembanding
-            setelah 2023, jadi belum ada angka akurasi, dan kandidat belum diverifikasi Claude.
+            setelah 2023, jadi belum ada angka akurasi, dan kandidat belum diverifikasi AI.
           </p>
         )}
 
