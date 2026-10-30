@@ -47,3 +47,6 @@ next-env.d.ts
 
 # local agent logs
 /.tmp/
+
+# server-only data (LSD polygons, BIG redistribution terms unknown, bible Q-09); never commit
+/data/

@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import Map, { Layer, NavigationControl, Source, type MapLayerMouseEvent } from "react-map-gl/maplibre";
+import Map, { Layer, Marker, NavigationControl, Source, type MapLayerMouseEvent } from "react-map-gl/maplibre";
+import AiPanel, { mintaCek, type Cek, type Mode } from "./AiPanel";
 import { setWorkerUrl } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 
@@ -51,10 +52,15 @@ export default function MapApp() {
   });
   const [picked, setPicked] = useState<Props | null>(null);
   const [periode, setPeriode] = useState<"2018-2023" | "2023-2025">("2018-2023");
+  const [mode, setMode] = useState<Mode>("lihat");
+  const [titik, setTitik] = useState<{ lat: number; lon: number } | null>(null);
+  const [cek, setCek] = useState<Cek | null>(null);
+  const [cekLoading, setCekLoading] = useState(false);
 
   useEffect(() => {
     const get = (f: string) => fetch(`/data/${f}`).then((r) => (r.ok ? r.json() : null));
-    get("lsd_badung.geojson").then(setLsd);
+    // LSD polygons stay off the public build until BIG's redistribution terms are known (bible Q-09)
+    if (process.env.NEXT_PUBLIC_TAMPILKAN_LSD === "1") get("lsd_badung.geojson").then(setLsd);
     get("batas_badung.geojson").then(setBatas);
   }, []);
 
@@ -96,6 +102,19 @@ export default function MapApp() {
   );
 
   const onClick = (e: MapLayerMouseEvent) => {
+    if (mode !== "lihat") {
+      const t = { lat: e.lngLat.lat, lon: e.lngLat.lng };
+      setTitik(t);
+      if (mode === "cek" && !cekLoading) {
+        setCek(null);
+        setCekLoading(true);
+        mintaCek(t).then((r) => {
+          setCek(r);
+          setCekLoading(false);
+        });
+      }
+      return;
+    }
     const f = e.features?.[0];
     setPicked(f ? (f.properties as unknown as Props) : null);
   };
@@ -108,6 +127,29 @@ export default function MapApp() {
           Peringatan dini alih fungsi Lahan Sawah yang Dilindungi (LSD). Wilayah: Kabupaten Badung, periode 2018 ke
           2023.
         </p>
+
+        <div className="mt-4 grid grid-cols-3 gap-1 text-sm">
+          {(
+            [
+              ["lihat", "Lihat peta"],
+              ["cek", "Cek lokasi (AI)"],
+              ["lapor", "Lapor (AI)"],
+            ] as const
+          ).map(([m, label]) => (
+            <button
+              key={m}
+              onClick={() => {
+                setMode(m);
+                setTitik(null);
+                setCek(null);
+              }}
+              className={`rounded-md border px-2 py-1.5 ${mode === m ? "border-green-700 bg-green-700 text-white" : "border-neutral-300"}`}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+        <AiPanel mode={mode} titik={titik} cek={cek} cekLoading={cekLoading} />
 
         <div className="mt-4 flex gap-1 rounded-lg bg-neutral-100 p-1 text-sm">
           {(["2018-2023", "2023-2025"] as const).map((p) => (
@@ -222,9 +264,10 @@ export default function MapApp() {
           mapStyle="https://tiles.openfreemap.org/styles/liberty"
           interactiveLayerIds={["kandidat-fill", "kandidat-pt"]}
           onClick={onClick}
-          cursor="pointer"
+          cursor={mode === "lihat" ? "pointer" : "crosshair"}
         >
           <NavigationControl position="top-right" />
+          {titik && <Marker longitude={titik.lon} latitude={titik.lat} color="#15803d" />}
           {lsd && (
             <Source id="lsd" type="geojson" data={lsd}>
               <Layer id="lsd-fill" type="fill" paint={{ "fill-color": "#16a34a", "fill-opacity": 0.18 }} />
