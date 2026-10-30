@@ -9,5 +9,7 @@ export function pesanGalat(e: unknown): { status: number; pesan: string } {
   if (e instanceof Anthropic.RateLimitError) return { status: 429, pesan: "Layanan AI sedang sibuk. Coba lagi sebentar lagi." };
   if (e instanceof Anthropic.AuthenticationError) return { status: 500, pesan: "Kunci layanan AI belum diatur di server." };
   if (e instanceof Anthropic.APIError) return { status: 502, pesan: `Layanan AI menolak permintaan (${e.status}).` };
+  // without ANTHROPIC_API_KEY the SDK throws a plain Error before any request is made
+  if (e instanceof Error && /api.?key|auth/i.test(e.message)) return { status: 500, pesan: "Kunci layanan AI belum diatur di server." };
   return { status: 500, pesan: "Terjadi kesalahan di server." };
 }
