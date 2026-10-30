@@ -280,7 +280,7 @@ export default function MapApp() {
       <main className="relative min-h-[55dvh] flex-1">
         {detail && (
           // on phones the detail opens as a sheet over the map instead of in the sidebar above it
-          <div className="absolute inset-x-2 bottom-2 z-10 max-h-[65%] overflow-y-auto rounded-xl bg-white p-3 text-sm text-neutral-800 shadow-2xl md:hidden">
+          <div className="absolute inset-x-2 bottom-2 z-10 max-h-[65%] overflow-y-auto rounded-xl border border-neutral-200 bg-white p-3 text-sm text-neutral-800 shadow-md md:hidden">
             <button
               onClick={() => setPicked(null)}
               className="float-right rounded px-2 text-lg leading-none text-neutral-500"
