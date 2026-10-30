@@ -50,13 +50,19 @@ export default function MapApp() {
     ditolak: false,
   });
   const [picked, setPicked] = useState<Props | null>(null);
+  const [periode, setPeriode] = useState<"2018-2023" | "2023-2025">("2018-2023");
 
   useEffect(() => {
     const get = (f: string) => fetch(`/data/${f}`).then((r) => (r.ok ? r.json() : null));
-    get("kandidat_badung.geojson").then(setKandidat);
     get("lsd_badung.geojson").then(setLsd);
     get("batas_badung.geojson").then(setBatas);
   }, []);
+
+  useEffect(() => {
+    fetch(`/data/${periode === "2018-2023" ? "kandidat_badung.geojson" : "kandidat_badung_2023_2025.geojson"}`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then(setKandidat);
+  }, [periode]);
 
   const stats = useMemo(() => {
     const s = {} as Record<Status, { n: number; ha: number }>;
@@ -102,6 +108,27 @@ export default function MapApp() {
           Peringatan dini alih fungsi Lahan Sawah yang Dilindungi (LSD). Wilayah: Kabupaten Badung, periode 2018 ke
           2023.
         </p>
+
+        <div className="mt-4 flex gap-1 rounded-lg bg-neutral-100 p-1 text-sm">
+          {(["2018-2023", "2023-2025"] as const).map((p) => (
+            <button
+              key={p}
+              onClick={() => {
+                setPicked(null);
+                setPeriode(p);
+              }}
+              className={`flex-1 rounded-md px-2 py-1 ${periode === p ? "bg-white font-semibold shadow-sm" : "text-neutral-600"}`}
+            >
+              {p.replace("-", " ke ")}
+            </button>
+          ))}
+        </div>
+        {periode === "2023-2025" && (
+          <p className="mt-2 rounded bg-amber-50 p-2 text-xs text-amber-900">
+            Periode terbaru, eksperimental: model yang sama diterapkan pada citra 2023 dan 2025. Belum ada data pembanding
+            setelah 2023, jadi belum ada angka akurasi, dan kandidat belum diverifikasi Claude.
+          </p>
+        )}
 
         <div className="mt-4 rounded-lg bg-green-50 p-3">
           <div className="text-xs uppercase tracking-wide text-green-800">Bangunan baru di LSD, 2018 ke 2023</div>
@@ -177,6 +204,10 @@ export default function MapApp() {
         ) : (
           <p className="mt-4 text-neutral-500">Klik sebuah kandidat di peta untuk melihat detail dan citra.</p>
         )}
+
+        <a href="/validasi" className="mt-4 block rounded-lg border border-green-700 p-3 text-green-800 hover:bg-green-50">
+          Seberapa akurat? Lihat validasi dan studi kasus →
+        </a>
 
         <p className="mt-4 text-xs text-neutral-500">
           Hasil ini indikasi dari citra satelit 10 m dan AI, bukan putusan hukum. Setiap kandidat wajib ditinjau
