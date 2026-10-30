@@ -1,0 +1,15 @@
+# What the Vercel CLI must NOT upload. data/ and public/data/ are gitignored but ARE needed by the app,
+# so this file, not .gitignore, decides the upload.
+/.next
+/node_modules
+/.tmp
+/.env*
+!/.env.example
+# LSD polygons never go into the public folder (bible Q-09); the server copy lives in data/
+/public/data/lsd_badung.geojson
+/public/data/lsd_kuta_utara.geojson
+# Kuta Utara test data and the review set are not part of the product
+/public/data/kandidat_kuta_utara.geojson
+/public/data/batas_kuta_utara.geojson
+/public/data/chips
+/public/data/tinjau
