@@ -69,6 +69,21 @@ export default function MapApp() {
     return s;
   }, [kandidat]);
 
+  // patches are a few hundred m2, invisible at regency zoom; show them as points until zoom 13
+  const points = useMemo<GeoJSON.FeatureCollection | null>(() => {
+    if (!kandidat) return null;
+    return {
+      type: "FeatureCollection",
+      features: kandidat.features.map((f) => {
+        const g = f.geometry;
+        const ring = (g.type === "Polygon" ? g.coordinates[0] : g.type === "MultiPolygon" ? g.coordinates[0][0] : []) as number[][];
+        const lon = ring.reduce((a, c) => a + c[0], 0) / Math.max(ring.length, 1);
+        const lat = ring.reduce((a, c) => a + c[1], 0) / Math.max(ring.length, 1);
+        return { type: "Feature", properties: f.properties, geometry: { type: "Point", coordinates: [lon, lat] } };
+      }),
+    };
+  }, [kandidat]);
+
   const filter = useMemo(
     () => ["in", ["get", "status"], ["literal", (Object.keys(show) as Status[]).filter((k) => show[k])]],
     [show],
@@ -174,7 +189,7 @@ export default function MapApp() {
         <Map
           initialViewState={{ longitude: 115.19, latitude: -8.53, zoom: 11 }}
           mapStyle="https://tiles.openfreemap.org/styles/liberty"
-          interactiveLayerIds={["kandidat-fill"]}
+          interactiveLayerIds={["kandidat-fill", "kandidat-pt"]}
           onClick={onClick}
           cursor="pointer"
         >
@@ -206,6 +221,29 @@ export default function MapApp() {
                     STATUS.belum_diverifikasi.color,
                   ],
                   "fill-opacity": 0.75,
+                }}
+              />
+            </Source>
+          )}
+          {points && (
+            <Source id="kandidat-titik" type="geojson" data={points}>
+              <Layer
+                id="kandidat-pt"
+                type="circle"
+                maxzoom={13}
+                filter={filter as never}
+                paint={{
+                  "circle-radius": ["interpolate", ["linear"], ["zoom"], 9, 2.5, 13, 5],
+                  "circle-color": [
+                    "match",
+                    ["get", "status"],
+                    "terverifikasi", STATUS.terverifikasi.color,
+                    "perlu_tinjau", STATUS.perlu_tinjau.color,
+                    "ditolak", STATUS.ditolak.color,
+                    STATUS.belum_diverifikasi.color,
+                  ],
+                  "circle-stroke-color": "#ffffff",
+                  "circle-stroke-width": 0.8,
                 }}
               />
             </Source>
