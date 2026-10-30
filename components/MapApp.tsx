@@ -53,9 +53,9 @@ export default function MapApp() {
 
   useEffect(() => {
     const get = (f: string) => fetch(`/data/${f}`).then((r) => (r.ok ? r.json() : null));
-    get("kandidat_kuta_utara.geojson").then(setKandidat);
-    get("lsd_kuta_utara.geojson").then(setLsd);
-    get("batas_kuta_utara.geojson").then(setBatas);
+    get("kandidat_badung.geojson").then(setKandidat);
+    get("lsd_badung.geojson").then(setLsd);
+    get("batas_badung.geojson").then(setBatas);
   }, []);
 
   const stats = useMemo(() => {
@@ -84,16 +84,16 @@ export default function MapApp() {
       <aside className="w-full shrink-0 overflow-y-auto border-b border-neutral-200 bg-white p-4 text-sm text-neutral-800 md:h-full md:w-96 md:border-r md:border-b-0">
         <h1 className="text-xl font-bold text-green-800">JAGA SAWAH</h1>
         <p className="mt-1 text-neutral-600">
-          Peringatan dini alih fungsi Lahan Sawah yang Dilindungi (LSD). Demo: Kecamatan Kuta Utara, Badung, periode
-          2018 ke 2023.
+          Peringatan dini alih fungsi Lahan Sawah yang Dilindungi (LSD). Wilayah: Kabupaten Badung, periode 2018 ke
+          2023.
         </p>
 
         <div className="mt-4 rounded-lg bg-green-50 p-3">
           <div className="text-xs uppercase tracking-wide text-green-800">Bangunan baru di LSD, 2018 ke 2023</div>
-          <div className="text-2xl font-semibold text-green-900">± 36 ha</div>
+          <div className="text-2xl font-semibold text-green-900">± 87 ha</div>
           <div className="text-xs text-neutral-600">
-            dari 799 ha LSD, menurut Google Open Buildings Temporal (kisaran 16 sampai 79 ha tergantung ambang). Belum
-            termasuk tanah urug dan bangunan 2024 sampai 2025.
+            dari 8.599 ha LSD Badung, menurut Google Open Buildings Temporal. Belum termasuk tanah urug dan bangunan
+            2024 sampai 2025.
           </div>
         </div>
 
@@ -153,7 +153,7 @@ export default function MapApp() {
             {picked.chip && (
               // eslint-disable-next-line @next/next/no-img-element
               <img
-                src={`/data/chips/${picked.chip}`}
+                src={`/data/chips_badung/${picked.chip}`}
                 alt={`Citra Sentinel-2 2018, 2023, 2025 untuk ${picked.patch_id}`}
                 className="mt-2 w-full rounded"
               />
@@ -172,7 +172,7 @@ export default function MapApp() {
 
       <main className="relative min-h-[60vh] flex-1">
         <Map
-          initialViewState={{ longitude: 115.153, latitude: -8.642, zoom: 13 }}
+          initialViewState={{ longitude: 115.19, latitude: -8.53, zoom: 11 }}
           mapStyle="https://tiles.openfreemap.org/styles/liberty"
           interactiveLayerIds={["kandidat-fill"]}
           onClick={onClick}
