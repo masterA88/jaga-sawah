@@ -1,0 +1,28 @@
+{
+ "munggu": {
+  "desa_ha": 684.2,
+  "lsd_ha": 461.3,
+  "kandidat_2018_2023": {
+   "n": 85,
+   "ha": 9.15,
+   "terverifikasi": 18
+  },
+  "kandidat_2023_2025": {
+   "n": 83,
+   "ha": 7.56
+  }
+ },
+ "canggu": {
+  "desa_ha": 563.5,
+  "lsd_ha": 197.8,
+  "kandidat_2018_2023": {
+   "n": 100,
+   "ha": 13.51,
+   "terverifikasi": 25
+  },
+  "kandidat_2023_2025": {
+   "n": 58,
+   "ha": 6.93
+  }
+ }
+}

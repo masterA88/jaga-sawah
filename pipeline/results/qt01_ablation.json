@@ -1,0 +1,48 @@
+{
+ "tanpa NDVI": {
+  "n_fitur": 27,
+  "akurasi": 0.912,
+  "lsd_alih_precision": 0.611,
+  "lsd_alih_recall": 0.846,
+  "cm_lsd": [
+   [
+    419,
+    35,
+    6
+   ],
+   [
+    8,
+    55,
+    2
+   ],
+   [
+    0,
+    0,
+    3
+   ]
+  ]
+ },
+ "hanya B11 B12 NDBI BSI": {
+  "n_fitur": 12,
+  "akurasi": 0.852,
+  "lsd_alih_precision": 0.51,
+  "lsd_alih_recall": 0.8,
+  "cm_lsd": [
+   [
+    403,
+    49,
+    8
+   ],
+   [
+    12,
+    52,
+    1
+   ],
+   [
+    0,
+    1,
+    2
+   ]
+  ]
+ }
+}

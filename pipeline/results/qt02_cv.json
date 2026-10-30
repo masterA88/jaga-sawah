@@ -1,0 +1,92 @@
+{
+ "lsd_pixels": 848840,
+ "lsd_new_building_ha": 87.0,
+ "prevalence": 0.0102,
+ "average_precision": 0.573,
+ "threshold_median": 0.836,
+ "precision": 0.559,
+ "recall": 0.6,
+ "mapped_ha": 93.4,
+ "at_0.8": {
+  "precision": 0.503,
+  "recall": 0.686
+ },
+ "at_0.9": {
+  "precision": 0.645,
+  "recall": 0.418
+ },
+ "folds": [
+  {
+   "fold": 0,
+   "tiles": [
+    "T300_9080",
+    "T300_9065",
+    "T290_9040",
+    "T295_9060",
+    "T295_9050",
+    "T300_9035"
+   ],
+   "thr": 0.836,
+   "prevalence": 0.0124,
+   "precision": 0.584,
+   "recall": 0.516
+  },
+  {
+   "fold": 1,
+   "tiles": [
+    "T295_9045",
+    "T300_9055",
+    "T305_9065",
+    "T290_9045",
+    "T305_9085",
+    "T300_9050"
+   ],
+   "thr": 0.84,
+   "prevalence": 0.0089,
+   "precision": 0.537,
+   "recall": 0.565
+  },
+  {
+   "fold": 2,
+   "tiles": [
+    "T305_9080",
+    "T305_9045",
+    "T305_9055",
+    "T300_9070",
+    "T305_9070"
+   ],
+   "thr": 0.825,
+   "prevalence": 0.0029,
+   "precision": 0.297,
+   "recall": 0.545
+  },
+  {
+   "fold": 3,
+   "tiles": [
+    "T300_9060",
+    "T305_9050",
+    "T300_9045",
+    "T295_9055",
+    "T295_9035"
+   ],
+   "thr": 0.821,
+   "prevalence": 0.0038,
+   "precision": 0.582,
+   "recall": 0.594
+  },
+  {
+   "fold": 4,
+   "tiles": [
+    "T295_9040",
+    "T305_9075",
+    "T295_9065",
+    "T300_9075",
+    "T305_9060"
+   ],
+   "thr": 0.856,
+   "prevalence": 0.0283,
+   "precision": 0.581,
+   "recall": 0.709
+  }
+ ]
+}

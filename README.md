@@ -52,7 +52,7 @@ Label latih berasal dari Google Open Buildings 2.5D Temporal (keberadaan banguna
 
 ## Pengujian
 
-Semua angka dinilai terhadap data yang tidak dipakai model sebagai input. Kecuali disebut lain, penilaian dilakukan di **semua piksel LSD dengan prevalensi asli**, bukan hanya contoh yang mudah. Ambang keputusan selalu dipilih dari data latih.
+Semua angka dinilai terhadap data yang tidak dipakai model sebagai input. Skrip dan file hasil tiap uji ada di [`pipeline/`](pipeline/README.md). Kecuali disebut lain, penilaian dilakukan di **semua piksel LSD dengan prevalensi asli**, bukan hanya contoh yang mudah. Ambang keputusan selalu dipilih dari data latih.
 
 ### 1. Model deteksi
 
@@ -138,7 +138,7 @@ npm install
 npm run dev
 ```
 
-Data hasil pipeline ada di `public/data/` dan `data/`, dan tidak di-commit karena ketentuan redistribusi peta LSD dari BIG belum jelas. Skrip pipeline ada di `experiments/qt01-kuta-utara/` dan `experiments/qt02-badung/` di workspace proyek. Salin `.env.example` ke `.env.local` dan isi `ANTHROPIC_API_KEY` untuk mengaktifkan cek lokasi dan lapor; batas pemakaian diatur dengan `AI_DAILY_LIMIT` dan `AI_PER_IP_LIMIT`.
+Data hasil pipeline ada di `public/data/` dan `data/`, dan tidak di-commit karena ketentuan redistribusi peta LSD dari BIG belum jelas. Skrip pipeline yang menghasilkannya, beserta ringkasan metrik semua uji, ada di [`pipeline/`](pipeline/README.md). Salin `.env.example` ke `.env.local` dan isi `ANTHROPIC_API_KEY` untuk mengaktifkan cek lokasi dan lapor; batas pemakaian diatur dengan `AI_DAILY_LIMIT` dan `AI_PER_IP_LIMIT`.
 
 ## Deployment URL
 

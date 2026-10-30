@@ -1,0 +1,105 @@
+{
+ "buildings": 131760,
+ "sources": {
+  "OpenStreetMap": 90453,
+  "Google Open Buildings": 34103,
+  "Microsoft ML Buildings": 7204
+ },
+ "label_ha_lsd": {
+  "sawah tetap": 283.5,
+  "alih fungsi": 18.0,
+  "bangunan lama": 4.6
+ },
+ "strata_vs_ref": {
+  "alih fungsi": {
+   "kandidat kuat": 11,
+   "kandidat lemah": 9,
+   "stabil hijau": 0
+  },
+  "bangunan lama": {
+   "kandidat kuat": 0,
+   "kandidat lemah": 1,
+   "stabil hijau": 0
+  },
+  "sawah tetap": {
+   "kandidat kuat": 6,
+   "kandidat lemah": 20,
+   "stabil hijau": 58
+  },
+  "tak berlabel": {
+   "kandidat kuat": 83,
+   "kandidat lemah": 70,
+   "stabil hijau": 42
+  }
+ },
+ "confusion": [
+  [
+   566,
+   30,
+   4
+  ],
+  [
+   57,
+   543,
+   0
+  ],
+  [
+   0,
+   0,
+   600
+  ]
+ ],
+ "confusion_lsd": [
+  [
+   437,
+   19,
+   4
+  ],
+  [
+   7,
+   58,
+   0
+  ],
+  [
+   0,
+   0,
+   3
+  ]
+ ],
+ "report": {
+  "sawah tetap": {
+   "precision": 0.9085072231139647,
+   "recall": 0.9433333333333334,
+   "f1-score": 0.9255928045789044,
+   "support": 600.0
+  },
+  "alih fungsi": {
+   "precision": 0.9476439790575916,
+   "recall": 0.905,
+   "f1-score": 0.9258312020460358,
+   "support": 600.0
+  },
+  "bangunan lama": {
+   "precision": 0.9933774834437086,
+   "recall": 1.0,
+   "f1-score": 0.9966777408637874,
+   "support": 600.0
+  },
+  "accuracy": 0.9494444444444444,
+  "macro avg": {
+   "precision": 0.9498428952050882,
+   "recall": 0.9494444444444445,
+   "f1-score": 0.9493672491629092,
+   "support": 1800.0
+  }
+ },
+ "alih_vs_all": {
+  "precision": 0.948,
+  "recall": 0.905
+ },
+ "n_per_class": {
+  "sawah tetap": 600,
+  "alih fungsi": 600,
+  "bangunan lama": 600
+ }
+}

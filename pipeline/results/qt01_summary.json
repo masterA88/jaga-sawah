@@ -1,0 +1,134 @@
+{
+ "pure_pixels_aoi": {
+  "sawah tetap": 22778,
+  "alih fungsi": 111511,
+  "bangunan tetap": 176041
+ },
+ "pure_pixels_lsd": {
+  "sawah tetap": 20471,
+  "alih fungsi": 26286,
+  "bangunan tetap": 19873
+ },
+ "sample_per_class": {
+  "sawah tetap": 600,
+  "alih fungsi": 600,
+  "bangunan tetap": 600
+ },
+ "blocks_m": 1000,
+ "folds": 5,
+ "confusion_all": [
+  [
+   503,
+   61,
+   36
+  ],
+  [
+   123,
+   190,
+   287
+  ],
+  [
+   66,
+   223,
+   311
+  ]
+ ],
+ "confusion_lsd": [
+  [
+   457,
+   52,
+   29
+  ],
+  [
+   83,
+   29,
+   33
+  ],
+  [
+   27,
+   23,
+   18
+  ]
+ ],
+ "report": {
+  "sawah tetap": {
+   "precision": 0.726878612716763,
+   "recall": 0.8383333333333334,
+   "f1-score": 0.7786377708978328,
+   "support": 600.0
+  },
+  "alih fungsi": {
+   "precision": 0.4008438818565401,
+   "recall": 0.31666666666666665,
+   "f1-score": 0.3538175046554935,
+   "support": 600.0
+  },
+  "bangunan tetap": {
+   "precision": 0.49053627760252366,
+   "recall": 0.5183333333333333,
+   "f1-score": 0.5040518638573744,
+   "support": 600.0
+  },
+  "accuracy": 0.5577777777777778,
+  "macro avg": {
+   "precision": 0.5394195907252756,
+   "recall": 0.5577777777777778,
+   "f1-score": 0.5455023798035669,
+   "support": 1800.0
+  }
+ },
+ "rule_baseline": {
+  "ndvi_d_lt": -0.02,
+  "ndbi_d_gt": 0.2,
+  "precision": 0.793,
+  "recall": 0.038
+ },
+ "top_features": [
+  [
+   "B12_t2",
+   0.102
+  ],
+  [
+   "NDBI_t2",
+   0.048
+  ],
+  [
+   "B12_d",
+   0.047
+  ],
+  [
+   "NDVI_sd_t2",
+   0.045
+  ],
+  [
+   "BSI_t2",
+   0.041
+  ],
+  [
+   "NDVI_p90_t1",
+   0.039
+  ],
+  [
+   "NDVI_p90_t2",
+   0.036
+  ],
+  [
+   "B11_t2",
+   0.035
+  ],
+  [
+   "B11_d",
+   0.034
+  ],
+  [
+   "NDVI_sd_t1",
+   0.031
+  ]
+ ],
+ "lsd_ha_raster": 798.6,
+ "ref_io_alih_fungsi_in_lsd_ha_2018_2023": 322.4,
+ "ref_io_built_in_lsd_2023_ha": 558.9,
+ "pred_alih_fungsi_in_lsd_ha_2018_2023": 166.0,
+ "pred_alih_fungsi_in_lsd_ha_2023_2025": 80.1,
+ "pred_alih_fungsi_in_lsd_ha_2023_2025_p_ge_0.7": 0.3
+}

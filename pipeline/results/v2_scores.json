@@ -1,0 +1,38 @@
+{
+ "batch_cost_usd": 0.658,
+ "n_verified": 160,
+ "verdicts": {
+  "conversion": 118,
+  "already_built": 4,
+  "harvest_or_fallow": 2,
+  "flooding": 0,
+  "cloud_artifact": 0,
+  "unclear": 36
+ },
+ "rf_all_patches": {
+  "ha": 48.6,
+  "precision": 0.558,
+  "recall": 0.745
+ },
+ "rf_patches_ge_1000": {
+  "ha": 35.4,
+  "precision": 0.553,
+  "recall": 0.539
+ },
+ "terverifikasi": {
+  "ha": 28.7,
+  "precision": 0.554,
+  "recall": 0.437
+ },
+ "terverifikasi_plus_tinjau": {
+  "ha": 34.8,
+  "precision": 0.552,
+  "recall": 0.528
+ },
+ "ditolak": {
+  "ha": 0.6,
+  "precision": 0.613,
+  "recall": 0.01
+ },
+ "obt_new_building_ha_in_lsd": 36.4
+}

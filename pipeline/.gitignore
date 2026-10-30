@@ -1,0 +1,8 @@
+# Pipeline outputs stay local: imagery stacks, embeddings, predictions, chips and anything derived from
+# the LSD layer. Only the scripts and the metric summaries in results/ are committed.
+qt01-kuta-utara/*
+!qt01-kuta-utara/*.py
+qt02-badung/*
+!qt02-badung/*.py
+__pycache__/
+.venv/

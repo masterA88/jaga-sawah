@@ -1,0 +1,92 @@
+{
+ "feature_sets": {
+  "S2": {
+   "n_fitur": 36,
+   "akurasi": 0.949,
+   "lsd_alih_precision": 0.753,
+   "lsd_alih_recall": 0.892,
+   "cm_lsd": [
+    [
+     437,
+     19,
+     4
+    ],
+    [
+     7,
+     58,
+     0
+    ],
+    [
+     0,
+     0,
+     3
+    ]
+   ]
+  },
+  "S1": {
+   "n_fitur": 12,
+   "akurasi": 0.644,
+   "lsd_alih_precision": 0.447,
+   "lsd_alih_recall": 0.585,
+   "cm_lsd": [
+    [
+     407,
+     46,
+     7
+    ],
+    [
+     19,
+     38,
+     8
+    ],
+    [
+     2,
+     1,
+     0
+    ]
+   ]
+  },
+  "S2+S1": {
+   "n_fitur": 48,
+   "akurasi": 0.97,
+   "lsd_alih_precision": 0.87,
+   "lsd_alih_recall": 0.923,
+   "cm_lsd": [
+    [
+     449,
+     9,
+     2
+    ],
+    [
+     5,
+     60,
+     0
+    ],
+    [
+     0,
+     0,
+     3
+    ]
+   ]
+  }
+ },
+ "area_olofsson": {
+  "fitur_terbaik": "S2+S1",
+  "lsd_ha_terpetakan": 798.6,
+  "peta_alih_fungsi_ha": 222.5,
+  "estimasi_alih_fungsi_ha": 152.5,
+  "ci95_ha": 12.4,
+  "strata": {
+   "stratum_1": {
+    "bobot": 0.2787,
+    "n": 300,
+    "p_ref_alih": 0.677
+   },
+   "stratum_0": {
+    "bobot": 0.7213,
+    "n": 300,
+    "p_ref_alih": 0.003
+   }
+  }
+ }
+}

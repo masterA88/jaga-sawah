@@ -1,0 +1,50 @@
+{
+ "S2+S1": {
+  "n_features": 48,
+  "average_precision": 0.572,
+  "threshold": 0.643,
+  "precision": 0.506,
+  "recall": 0.75,
+  "mapped_ha": 53.9,
+  "at_0.8": {
+   "precision": 0.594,
+   "recall": 0.531
+  },
+  "at_0.9": {
+   "precision": 0.668,
+   "recall": 0.22
+  }
+ },
+ "AlphaEarth": {
+  "n_features": 193,
+  "average_precision": 0.581,
+  "threshold": 0.614,
+  "precision": 0.525,
+  "recall": 0.688,
+  "mapped_ha": 47.7,
+  "at_0.8": {
+   "precision": 0.668,
+   "recall": 0.344
+  },
+  "at_0.9": {
+   "precision": 0.779,
+   "recall": 0.097
+  }
+ },
+ "S2+S1+AlphaEarth": {
+  "n_features": 241,
+  "average_precision": 0.65,
+  "threshold": 0.649,
+  "precision": 0.577,
+  "recall": 0.734,
+  "mapped_ha": 46.2,
+  "at_0.8": {
+   "precision": 0.696,
+   "recall": 0.487
+  },
+  "at_0.9": {
+   "precision": 0.775,
+   "recall": 0.188
+  }
+ }
+}

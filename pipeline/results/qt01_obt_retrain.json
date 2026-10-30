@@ -1,0 +1,31 @@
+{
+ "label_rule": "p18 < 0.1 and p23 >= 0.3",
+ "lsd_pixels_scored": 77104,
+ "lsd_positive_ha": 36.4,
+ "prevalence": 0.0471,
+ "average_precision": 0.576,
+ "threshold": 0.638,
+ "precision": 0.507,
+ "recall": 0.757,
+ "mapped_ha": 54.2,
+ "at_0.5": {
+  "precision": 0.433,
+  "recall": 0.858,
+  "mapped_ha": 72.0
+ },
+ "at_0.7": {
+  "precision": 0.537,
+  "recall": 0.687,
+  "mapped_ha": 46.5
+ },
+ "at_0.8": {
+  "precision": 0.604,
+  "recall": 0.513,
+  "mapped_ha": 30.9
+ },
+ "at_0.9": {
+  "precision": 0.67,
+  "recall": 0.211,
+  "mapped_ha": 11.4
+ }
+}

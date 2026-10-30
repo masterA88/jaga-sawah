@@ -1,0 +1,45 @@
+{
+ "obt_ha_in_lsd": {
+  "alih_fungsi_2018_2023": 16.4,
+  "tetap_tanpa_bangunan": 668.6,
+  "sudah_bangunan_2018": 2.4
+ },
+ "map_vs_obt_pixels_in_lsd": {
+  "tp": 1491,
+  "fp": 13331,
+  "fn": 150,
+  "tn": 53526,
+  "precision": 0.101,
+  "recall": 0.909
+ },
+ "claude_status_vs_obt": [
+  {
+   "status": "ditolak",
+   "n": 141,
+   "median_conv_share": 0.0,
+   "share_patches_conv_ge_25pct": 0.021,
+   "median_old_share": 0.0
+  },
+  {
+   "status": "perlu_tinjau",
+   "n": 190,
+   "median_conv_share": 0.0,
+   "share_patches_conv_ge_25pct": 0.063,
+   "median_old_share": 0.0
+  },
+  {
+   "status": "terverifikasi",
+   "n": 177,
+   "median_conv_share": 0.093,
+   "share_patches_conv_ge_25pct": 0.136,
+   "median_old_share": 0.0
+  }
+ ],
+ "tahun_bangunan_terverifikasi": {
+  "2019.0": 4,
+  "2020.0": 7,
+  "2021.0": 22,
+  "2022.0": 26,
+  "2023.0": 84
+ }
+}

@@ -1,0 +1,23 @@
+# Python 3.12. Install with: uv venv --python 3.12 .venv && uv pip install -r requirements.txt
+earthengine-api
+pystac-client
+planetary-computer
+odc-stac
+rioxarray
+xarray
+netCDF4
+dask
+geopandas
+shapely
+pyproj
+rasterio
+affine
+scipy
+numpy
+pandas
+scikit-learn
+duckdb
+pyarrow
+matplotlib
+requests
+anthropic

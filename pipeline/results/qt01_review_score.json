@@ -1,0 +1,23 @@
+{
+ "obt_negatif": {
+  "n": 21,
+  "alih_fungsi": 10,
+  "sudah_bangunan_2018": 10,
+  "ragu": 1,
+  "share_alih_fungsi_of_decided": 0.5
+ },
+ "obt_positif": {
+  "n": 10,
+  "sudah_bangunan_2018": 4,
+  "alih_fungsi": 6,
+  "share_alih_fungsi_of_decided": 0.6
+ },
+ "stabil": {
+  "n": 10,
+  "masih_hijau": 4,
+  "alih_fungsi": 3,
+  "sudah_bangunan_2018": 2,
+  "ragu": 1,
+  "share_alih_fungsi_of_decided": 0.333
+ }
+}
