@@ -120,12 +120,16 @@ export default function AiPanel({ mode, titik, cek, cekLoading }: PanelProps) {
             tidak disimpan.
           </p>
           <div className="mt-1 font-mono text-xs">{loc ?? "Belum ada lokasi"}</div>
-          <input
-            type="file"
-            accept="image/jpeg,image/png,image/webp"
-            onChange={(e) => setFoto(e.target.files?.[0] ?? null)}
-            className="mt-2 block w-full text-xs"
-          />
+          <label className="mt-2 flex cursor-pointer items-center justify-between gap-2 rounded-lg border border-dashed border-green-700 px-3 py-2 text-sm text-green-800 hover:bg-green-50">
+            <span className="truncate">{foto ? foto.name : "Pilih foto lapangan"}</span>
+            <span className="shrink-0 text-xs text-neutral-500">JPG, PNG, WebP, maks. 4 MB</span>
+            <input
+              type="file"
+              accept="image/jpeg,image/png,image/webp"
+              onChange={(e) => setFoto(e.target.files?.[0] ?? null)}
+              className="sr-only"
+            />
+          </label>
           <textarea
             value={catatan}
             onChange={(e) => setCatatan(e.target.value)}
