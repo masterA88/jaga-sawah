@@ -24,6 +24,12 @@ type Data = {
     precision_at_0_9: number;
     recall_at_0_9: number;
     folds: { precision: number; recall: number; tiles: number }[];
+    precision_ci95: [number, number];
+    recall_ci95: [number, number];
+    low_change: { tiles: number; share_of_scored_lsd: number; precision: number; recall: number };
+    threshold: { obt: string; ha: number; precision: number; recall: number }[];
+    patch_any_obt: number;
+    patch_mostly_obt: number;
   };
   method: string[];
   baselines: { name: string; result: string }[];
@@ -65,31 +71,37 @@ export default function ValidationView() {
       </Link>
       <h1 className="mt-2 text-2xl font-bold text-green-800">Seberapa bisa dipercaya JAGA SAWAH?</h1>
       <p className="mt-1 text-neutral-600">
-        Semua angka di halaman ini diukur terhadap data yang tidak dipakai untuk membuat model, di seluruh{" "}
-        {id(h.lsd_ha, 0)} ha Lahan Sawah yang Dilindungi (LSD) Kabupaten Badung, periode 2018 ke 2023.
+        Angka di halaman ini mengukur seberapa cocok JAGA SAWAH dengan data bangunan tahunan Google (Open Buildings
+        Temporal) di seluruh {id(h.lsd_ha, 0)} ha Lahan Sawah yang Dilindungi (LSD) Kabupaten Badung, periode 2018 ke
+        2023. Data Google itu juga dibuat dari citra Sentinel-2, jadi ini kecocokan dengan data pembanding, bukan
+        akurasi terhadap kondisi lapangan.
       </p>
 
       <section className="mt-6 grid gap-3 sm:grid-cols-3">
         <Stat
           label="Presisi"
           value={pct(h.precision)}
-          note={`dari setiap 10 alarm, sekitar ${Math.round(h.precision * 10)} terbukti bangunan baru (batas bawah)`}
+          note={`dari setiap 10 alarm, sekitar ${Math.round(h.precision * 10)} cocok dengan bangunan baru menurut data Google (selang 95% antar-tile ${pct(h.precision_ci95[0])} sampai ${pct(h.precision_ci95[1])})`}
         />
         <Stat
           label="Recall"
           value={pct(h.recall)}
-          note={`sekitar ${Math.round(h.recall * 10)} dari 10 bangunan baru di LSD tertangkap`}
+          note={`sekitar ${Math.round(h.recall * 10)} dari 10 bangunan baru menurut data Google tertangkap (${pct(h.recall_ci95[0])} sampai ${pct(h.recall_ci95[1])})`}
         />
         <Stat
           label="Bangunan baru di LSD"
-          value={`± ${id(h.obt_new_building_ha, 0)} ha`}
-          note="2018 ke 2023, menurut Google Open Buildings Temporal"
+          value={`${id(h.obt_new_building_ha, 0)} ha`}
+          note={`2018 ke 2023, menurut Google Open Buildings Temporal pada ambang 0,3 (${id(h.threshold[h.threshold.length - 1].ha, 0)} sampai ${id(h.threshold[0].ha, 0)} ha untuk ambang 0,5 sampai 0,1); belum termasuk tanah urug dan jalan`}
         />
       </section>
       <p className="mt-2 text-xs text-neutral-500">
-        Average precision {id(h.average_precision, 2)}. Untuk daftar prioritas petugas (ambang 0,9): presisi{" "}
-        {pct(h.precision_at_0_9)}, recall {pct(h.recall_at_0_9)}. Hanya {pct(h.prevalence)} piksel LSD yang berubah
-        menjadi bangunan, jadi tebakan acak hanya benar sekitar {pct(h.prevalence)} kali.
+        Average precision {id(h.average_precision, 2)}. Jika hanya alarm dengan probabilitas minimal 0,9 yang dipakai,
+        presisinya naik menjadi {pct(h.precision_at_0_9)}, tetapi recall turun menjadi {pct(h.recall_at_0_9)}. Hanya{" "}
+        {pct(h.prevalence)} piksel LSD yang berubah menjadi bangunan, jadi tebakan acak hanya benar sekitar{" "}
+        {pct(h.prevalence)} kali. Di tile dengan perubahan rendah, yang mencakup {pct(h.low_change.share_of_scored_lsd)}{" "}
+        LSD, presisinya {pct(h.low_change.precision)} dan recall-nya {pct(h.low_change.recall)}. Per petak, sembilan
+        dari sepuluh kandidat ({pct(h.patch_any_obt)}) menyentuh bangunan baru menurut data Google, dan{" "}
+        {pct(h.patch_mostly_obt)} sebagian besar berisi bangunan baru.
       </p>
 
       <section className="mt-8">
@@ -116,6 +128,33 @@ export default function ValidationView() {
                   <td className="py-1 pr-4">{f.tiles}</td>
                   <td className="py-1 pr-4">{pct(f.precision)}</td>
                   <td className="py-1">{pct(f.recall)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <h3 className="mt-4 text-sm font-semibold">Pengaruh ambang data pembanding</h3>
+        <p className="mt-1 text-xs text-neutral-600">
+          Prediksi model tetap sama; yang diubah hanya ambang keyakinan Google Open Buildings Temporal 2023 untuk
+          menyebut piksel sebagai bangunan. Kami memakai 0,3.
+        </p>
+        <div className="mt-2 overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead className="text-left text-neutral-500">
+              <tr>
+                <th className="py-1 pr-4 font-normal">Ambang</th>
+                <th className="py-1 pr-4 font-normal">Bangunan baru di LSD</th>
+                <th className="py-1 pr-4 font-normal">Presisi</th>
+                <th className="py-1 font-normal">Recall</th>
+              </tr>
+            </thead>
+            <tbody className="tabular-nums">
+              {h.threshold.map((t) => (
+                <tr key={t.obt} className={`border-t border-neutral-100 ${t.obt === "0.3" ? "font-semibold" : ""}`}>
+                  <td className="py-1 pr-4">{t.obt.replace(".", ",")}</td>
+                  <td className="py-1 pr-4">{id(t.ha, 0)} ha</td>
+                  <td className="py-1 pr-4">{pct(t.precision)}</td>
+                  <td className="py-1">{pct(t.recall)}</td>
                 </tr>
               ))}
             </tbody>
@@ -193,9 +232,12 @@ export default function ValidationView() {
       <section className="mt-8">
         <h2 className="text-lg font-semibold">Peran AI verifikasi</h2>
         <p className="mt-1 text-sm text-neutral-700">
-          {d.claude.verified} kandidat diperiksa AI verifikasi (biaya US${d.claude.cost_usd.toFixed(2)}). Hasilnya:{" "}
-          {d.claude.verdicts.conversion} alih fungsi, {d.claude.verdicts.unclear} perlu tinjau,{" "}
-          {d.claude.verdicts.already_built} sudah bangunan sejak 2018 (kesalahan peta LSD), dan sisanya ditolak.
+          {d.claude.verified} dari {Object.values(d.claude.status_n).reduce((a, b) => a + b, 0)} kandidat, yaitu yang
+          seluas minimal 1.000 m², diperiksa AI verifikasi (biaya sekitar US${d.claude.cost_usd.toFixed(2)}, dihitung
+          dari jumlah token). Hasilnya: {d.claude.verdicts.conversion} alih fungsi, {d.claude.verdicts.unclear} perlu
+          tinjau, {d.claude.verdicts.already_built} diberi putusan sudah bangunan sejak 2018, dan sisanya ditolak.
+          Data Google tidak mendukung putusan &ldquo;sudah bangunan sejak 2018&rdquo; untuk hampir semua petak itu,
+          jadi petak tersebut perlu dicek petugas sebelum dianggap kesalahan peta LSD.
           AI verifikasi menjelaskan setiap kandidat dalam bahasa Indonesia dan memilah mana yang perlu dicek petugas.
           Langkah ini tidak menaikkan presisi deteksi, dan kami tidak mengklaimnya.
         </p>

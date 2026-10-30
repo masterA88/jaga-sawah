@@ -104,5 +104,8 @@ out = {"buildings": int(len(bld)), "sources": bld.src.value_counts().to_dict(),
        "report": {k: v for k, v in rep.items() if k in NAMES + ["accuracy", "macro avg"]},
        "alih_vs_all": {"precision": round(tp / max(tp + fp, 1), 3), "recall": round(tp / max(tp + fnn, 1), 3)},
        "n_per_class": {NAMES[c]: int((yv == c).sum()) for c in range(3)}}
-json.dump(out, open("qt01_building_summary.json", "w"), indent=1, default=str)
+# Other QT-01 scripts load this file with runpy for its variables; only a direct run writes the outputs,
+# so those scripts can no longer overwrite the recorded results.
+if __name__ == "__main__":
+    json.dump(out, open("qt01_building_summary.json", "w"), indent=1, default=str)
 print(json.dumps(out["alih_vs_all"]))

@@ -62,7 +62,10 @@ flat = XA.reshape(-1, XA.shape[-1])
 okf = np.isfinite(flat).all(1) & in_lsd.ravel()
 pred = np.full(flat.shape[0], -1, np.int8)
 pred[okf] = rf.predict(flat[okf])
-np.save("pred_lsd_2018_2023_best.npy", pred.reshape(H, W))
+# Other QT-01 scripts load this file with runpy for its variables; only a direct run writes the outputs,
+# so those scripts can no longer overwrite the recorded results.
+if __name__ == "__main__":
+    np.save("pred_lsd_2018_2023_best.npy", pred.reshape(H, W))
 
 # Olofsson: strata = mapped change (1) vs mapped no change; reference = footprint label, change = class 1
 lsd_pix = okf
@@ -88,4 +91,5 @@ area = {"fitur_terbaik": best, "lsd_ha_terpetakan": round(float(ha_total), 1),
         "peta_alih_fungsi_ha": round(float((lsd_pix & mapped).sum() / 100), 1),
         "estimasi_alih_fungsi_ha": round(float(est), 1), "ci95_ha": round(float(ci), 1), "strata": detail}
 print(json.dumps(area, indent=1))
-json.dump({"feature_sets": res, "area_olofsson": area}, open("qt01_s1_area.json", "w"), indent=1)
+if __name__ == "__main__":
+    json.dump({"feature_sets": res, "area_olofsson": area}, open("qt01_s1_area.json", "w"), indent=1)

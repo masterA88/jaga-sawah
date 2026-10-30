@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "JAGA SAWAH",
-  description: "Peringatan dini alih fungsi Lahan Sawah yang Dilindungi di Bali",
+  description: "Pemantauan alih fungsi Lahan Sawah yang Dilindungi di Bali dengan citra satelit dan AI",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

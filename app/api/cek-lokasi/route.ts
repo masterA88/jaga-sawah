@@ -17,10 +17,15 @@ Kamu menerima fakta tentang satu titik di peta: apakah di dalam Kabupaten Badung
 yang Dilindungi (LSD), dan kandidat alih fungsi di dekatnya hasil model satelit dan verifikasi AI.
 Jelaskan arti fakta itu dalam 2 sampai 4 kalimat bahasa Indonesia yang sederhana. Jangan menambah fakta yang
 tidak ada di data. Hasil model adalah indikasi, bukan putusan hukum; katakan itu bila ada kandidat.
+Kamu tidak tahu apakah lahan sudah ditetapkan sebagai LP2B atau berada di zona pertanian RTRW/RDTR, karena data itu
+belum ada. Jangan menyimpulkan bahwa suatu pasal pasti berlaku atau pasti tidak berlaku. Untuk pasal yang punya
+syarat, sebut syaratnya di ringkasan. Titik di luar LSD masih bisa dilindungi Perda Bali 4/2026 Pasal 13 jika
+berzona pertanian, jadi jangan katakan titik itu bebas dibangun.
 Pilih pasal hanya dari daftar berikut, dan hanya yang relevan; boleh kosong:
 ${aturanTeks()}
-saran: satu kalimat langkah berikutnya yang wajar (misalnya cek ke Dinas Pertanian atau subak, atau tidak
-perlu tindakan).`;
+saran: satu kalimat langkah berikutnya yang wajar, misalnya cek status LSD, LP2B, dan zona RTRW/RDTR ke Dinas
+Pertanian dan Pangan atau Dinas PUPR Badung sebelum membangun atau membeli lahan, atau sampaikan ke subak.
+Jangan menyarankan bahwa tidak perlu tindakan.`;
 
 export async function POST(req: Request) {
   const body = (await req.json().catch(() => null)) as { lat?: unknown; lon?: unknown } | null;

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-type Pasal = { id: string; sumber: string; pasal: string; isi: string };
+type Pasal = { id: string; sumber: string; pasal: string; isi: string; syarat?: string };
 type Konteks = { dalam_badung: boolean; dalam_lsd: boolean; kandidat: { periode: string; status: string }[] };
 type Cek = { konteks?: Konteks; jawaban?: { status_lokasi: string; ringkasan: string; pasal: Pasal[]; saran: string }; galat?: string };
 type Lapor = {
@@ -43,6 +43,7 @@ export function PasalList({ pasal }: { pasal: Pasal[] }) {
               {p.sumber}, {p.pasal}
             </div>
             <div className="text-neutral-700">&ldquo;{p.isi}&rdquo;</div>
+            {p.syarat && <div className="mt-1 text-amber-800">Syarat: {p.syarat}</div>}
           </li>
         ))}
       </ul>

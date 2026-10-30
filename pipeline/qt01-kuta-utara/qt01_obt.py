@@ -1,7 +1,8 @@
-"""QT-01 step 10: independent evaluation with Google Open Buildings 2.5D Temporal (Earth Engine, offline).
+"""QT-01 step 10: evaluation against Google Open Buildings 2.5D Temporal (Earth Engine, offline).
 
 Building presence per year 2016 to 2023 (CC BY 4.0, R-D21) is averaged onto the same 10 m grid as the
-Sentinel stacks and saved as obt_presence.npy (8, H, W). It shares no input with our model, so it can grade
+Sentinel stacks and saved as obt_presence.npy (8, H, W). OBT is itself derived from Sentinel-2 by another
+model, so it is a reference map, not ground truth; scores against it measure agreement with OBT. It grades
 the S2+S1 map and Claude's verdicts that were built on Overture labels. It also gives a year of change.
 Earth Engine is used only here, in a batch script, never by the web app (KD-009).
 """
@@ -52,7 +53,7 @@ for yr in YEARS:
 pres = np.stack(stack)
 np.save("obt_presence.npy", pres)
 
-# reference classes, fully independent of Sentinel: built when mean presence >= 0.5 in the 10 m cell
+# reference classes from OBT (derived from Sentinel-2, so not independent): built when mean presence >= 0.5 in the 10 m cell
 from affine import Affine  # noqa: E402
 tr = Affine(dx, 0, x[0] - dx / 2, 0, dy, y[0] - dy / 2)
 lsd = gpd.read_file("lsd_kuta_utara.geojson").to_crs(32750)

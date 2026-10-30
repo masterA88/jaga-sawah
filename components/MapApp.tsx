@@ -33,7 +33,7 @@ const STATUS: Record<Status, { label: string; color: string }> = {
 
 const VERDICT: Record<string, string> = {
   conversion: "Alih fungsi",
-  already_built: "Sudah bangunan sejak 2018",
+  already_built: "Mungkin sudah bangunan sejak 2018 (perlu dicek)",
   harvest_or_fallow: "Masih sawah (panen atau bera)",
   flooding: "Genangan",
   cloud_artifact: "Awan atau cacat citra",
@@ -183,8 +183,8 @@ export default function MapApp() {
       <aside className="max-h-[45dvh] w-full shrink-0 overflow-y-auto border-b border-neutral-200 bg-white p-4 text-sm text-neutral-800 md:h-full md:max-h-none md:w-96 md:border-r md:border-b-0">
         <h1 className="text-xl font-bold text-green-800">JAGA SAWAH</h1>
         <p className="mt-1 text-neutral-600">
-          Peringatan dini alih fungsi Lahan Sawah yang Dilindungi (LSD). Wilayah: Kabupaten Badung, periode 2018 ke
-          2023.
+          Pemantauan alih fungsi Lahan Sawah yang Dilindungi (LSD) dengan citra satelit dan AI. Wilayah: Kabupaten
+          Badung, periode 2018 ke 2023.
         </p>
 
         <div className="mt-4 grid grid-cols-3 gap-1 text-sm">
@@ -233,10 +233,10 @@ export default function MapApp() {
 
         <div className="mt-4 rounded-lg bg-green-50 p-3">
           <div className="text-xs uppercase tracking-wide text-green-800">Bangunan baru di LSD, 2018 ke 2023</div>
-          <div className="text-2xl font-semibold text-green-900">± 87 ha</div>
+          <div className="text-2xl font-semibold text-green-900">sekitar 87 ha</div>
           <div className="text-xs text-neutral-600">
-            dari 8.599 ha LSD Badung, menurut Google Open Buildings Temporal. Belum termasuk tanah urug dan bangunan
-            2024 sampai 2025.
+            dari 8.599 ha LSD Badung, menurut Google Open Buildings Temporal pada ambang 0,3 (35 sampai 218 ha untuk
+            ambang 0,5 sampai 0,1). Belum termasuk tanah urug, jalan, dan bangunan 2024 sampai 2025.
           </div>
         </div>
 

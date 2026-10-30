@@ -2,6 +2,7 @@ import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod";
 import { z } from "zod";
 import { cekBatas, ipDari } from "@/lib/batas";
 import { client, MODEL, pesanGalat } from "@/lib/claude";
+import { hapusMetadata } from "@/lib/exif";
 import { konteksLokasi } from "@/lib/lokasi";
 
 const MAX_BYTES = 4 * 1024 * 1024;
@@ -15,7 +16,7 @@ const Triase = z.object({
   prioritas: z.enum(["tinggi", "sedang", "rendah"]),
 });
 
-const SYSTEM = `Kamu menyaring laporan warga untuk JAGA SAWAH, sistem peringatan alih fungsi sawah di Badung, Bali.
+const SYSTEM = `Kamu menyaring laporan warga untuk JAGA SAWAH, sistem pemantauan alih fungsi sawah di Badung, Bali.
 Kamu menerima satu foto dari lapangan, catatan pelapor (boleh kosong), dan fakta lokasi: apakah titiknya di dalam
 Lahan Sawah yang Dilindungi (LSD) dan apakah ada kandidat alih fungsi dari citra satelit di dekatnya.
 kategori:
@@ -47,7 +48,7 @@ export async function POST(req: Request) {
   const batas = cekBatas(ipDari(req));
   if (!batas.ok) return Response.json({ konteks, galat: batas.alasan }, { status: 429 });
   try {
-    const data = Buffer.from(await foto.arrayBuffer()).toString("base64");
+    const data = hapusMetadata(Buffer.from(await foto.arrayBuffer()), foto.type).toString("base64");
     const res = await client.messages.parse({
       model: MODEL,
       max_tokens: 1500,
@@ -64,7 +65,7 @@ export async function POST(req: Request) {
     if (res.stop_reason === "refusal" || !res.parsed_output) {
       return Response.json({ konteks, galat: "AI tidak memberi penilaian untuk foto ini." }, { status: 502 });
     }
-    // the photo is not stored: only the assessment goes back to the reporter
+    // the photo is not stored, and its metadata was removed before the call: only the assessment goes back
     return Response.json({ konteks, triase: res.parsed_output });
   } catch (e) {
     const g = pesanGalat(e);

@@ -1,0 +1,12 @@
+{
+ "patches_ge3px": 849,
+ "share_with_any_obt_new_px": 0.902,
+ "share_with_ge25pct_obt_new": 0.859,
+ "share_with_ge50pct_obt_new": 0.657,
+ "patches_ge10px(>=1000m2)": 269,
+ "ge10px_share_any": 0.97,
+ "ge10px_share_ge50pct": 0.68,
+ "lt10px_share_any": 0.871,
+ "lt10px_share_ge50pct": 0.647,
+ "false_alarm_px_inside_patches_holding_obt_new": 0.759
+}

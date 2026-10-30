@@ -46,13 +46,13 @@ Jalankan dari `qt01-kuta-utara/`. Uji ini merekam metode yang dicoba sebelum QT-
 | `qt01_building_labels.py`, `qt01_ablation.py` | Label dari footprint Overture, uji kebocoran fitur |
 | `qt01_s1.py`, `qt01_s1_area.py`, `qt01_ablation_s1.py` | Sentinel-1, estimasi luas (kemudian ditarik) |
 | `qt01_claude_verify.py`, `qt01_batch_patches.py`, `qt01_batch_check.py` | Verifikasi AI pada kandidat |
-| `qt01_obt.py` | Uji B: evaluasi independen dengan Open Buildings Temporal |
+| `qt01_obt.py` | Uji B: evaluasi v1 terhadap Open Buildings Temporal |
 | `qt01_obt_retrain.py`, `qt01_v2_pipeline.py` | Uji C: model v2 (tambah `--ae` untuk v3) |
 | `qt01_alphaearth.py` | Uji D dan E: embedding AlphaEarth |
 | `qt01_export_web.py` | Ekspor data Kuta Utara untuk versi awal aplikasi |
 | `qt01_review_set.py`, `qt01_review_score.py` | Tinjauan manusia buta (hasilnya tidak sah, lihat README utama) |
 
-`qt01_build_stack.py` harus dijalankan sebelum skrip QT-01 lain. Beberapa skrip memanggil skrip sebelumnya lewat `runpy`, jadi urutan di tabel juga urutan menjalankannya.
+`qt01_build_stack.py` harus dijalankan sebelum skrip QT-01 lain. Beberapa skrip memanggil skrip sebelumnya lewat `runpy`, jadi urutan di tabel juga urutan menjalankannya. Skrip yang dipanggil lewat `runpy` hanya menulis file hasilnya jika dijalankan langsung, sehingga file hasil tidak tertimpa oleh skrip lain.
 
 ## Ringkasan hasil
 
@@ -65,7 +65,7 @@ Jalankan dari `qt01-kuta-utara/`. Uji ini merekam metode yang dicoba sebelum QT-
 | `qt01_obt.json`, `qt01_obt_retrain.json` | Uji B dan C |
 | `v2_scores.json`, `v3_scores.json` | AI verifikasi pada kandidat v2 dan v3 |
 | `qt01_summary.json` | Uji A |
-| `qt01_building_summary.json`, `qt01_ablation*.json`, `qt01_s1_area.json` | Uji dengan label footprint (v1, ditarik) |
+| `qt01_building_summary.json`, `qt01_ablation*.json`, `qt01_s1_area.json` | Uji dengan label footprint (v1, **ditarik**). Angka di file ini, termasuk estimasi luas, dinilai hanya pada piksel jelas dan tidak boleh dikutip. Versi di repo ditulis ulang oleh rantai `runpy` sebelum skrip diberi pengaman, jadi isinya (presisi 0,87, 152,5 ha) sedikit berbeda dari catatan awal (0,88, 161 ha) |
 | `qt01_review_score.json` | Tinjauan manusia buta |
 
 ## Lisensi data
