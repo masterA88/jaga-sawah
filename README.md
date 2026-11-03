@@ -6,7 +6,7 @@ Penulis: Hilmi (https://master-hilmi.vercel.app/)
 
 ![Cuplikan JAGA SAWAH: citra satelit Canggu 2018 ke 2025, peta kandidat, detail kandidat, cek lokasi dengan AI](docs/media/demo.gif)
 
-*Cuplikan 18 detik: citra satelit Canggu 2018 ke 2025, peta kandidat Badung, detail kandidat, dan cek lokasi dengan AI.*
+*Cuplikan 29 detik dalam resolusi 1280 x 720: citra satelit Canggu 2018 ke 2025, peta kandidat Badung, detail kandidat, cek lokasi dengan AI, dan lapor dengan foto.*
 
 ## Description
 
