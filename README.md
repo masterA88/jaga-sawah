@@ -184,7 +184,7 @@ Tidak diperlukan.
 - Teks regulasi: Perpres 4/2026 (peraturan.bpk.go.id) dan Perda Provinsi Bali 4/2026 (JDIH Provinsi Bali).
 - Footprint bangunan untuk uji awal: Overture Maps Foundation (ODbL), berisi Google Open Buildings (CC BY 4.0), Microsoft Building Footprints (ODbL), dan OpenStreetMap (ODbL).
 - Basemap: OpenFreeMap, OpenMapTiles, data OpenStreetMap. Batas wilayah: OpenStreetMap lewat Nominatim.
-- Disclosure lengkap: [docs/ai-technology-disclosure.md](docs/ai-technology-disclosure.md).
+- Proposal dan AI & Technology Disclosure lengkap (Lampiran B): [docs/AIWIC2026_ManifoldDatafolk_JAGASAWAH.pdf](docs/AIWIC2026_ManifoldDatafolk_JAGASAWAH.pdf).
 
 ## Team Members
 
