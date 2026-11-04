@@ -31,7 +31,7 @@ Pengguna:
 - **Lapor dengan foto**: warga atau subak mengunggah foto lapangan, AI menyaringnya menjadi kategori dan prioritas. Metadata foto (lokasi GPS, kamera, waktu) dihapus di server sebelum dikirim ke AI, dan foto tidak disimpan.
 - Halaman **Validasi**: angka, cara ukur, pengaruh ambang data pembanding, pembanding lain, studi kasus dari berita, dan batasan.
 - Tautan yang bisa dibagikan: `?patch=<id>` membuka satu kandidat, `?lat=&lon=&z=` membuka posisi peta tertentu.
-- Batas pemakaian AI per perangkat dan per hari.
+- Batas pemakaian AI per hari, untuk seluruh pengguna dan per alamat IP.
 
 ## Tech Stack
 
@@ -188,4 +188,6 @@ Tidak diperlukan.
 
 ## Team Members
 
-- Hilmi (https://master-hilmi.vercel.app/)
+Tim **Manifold Datafolk**, kategori Mahasiswa/Umum.
+
+- Hilmi (https://master-hilmi.vercel.app/): ketua tim; data, model, aplikasi, dan dokumentasi
